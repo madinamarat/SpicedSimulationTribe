@@ -1,4 +1,8 @@
 
+import numpy as np
+
+
+
 class Customer: 
     '''
     Customer for supermarket simulation.
@@ -11,7 +15,7 @@ class Customer:
     
     '''
     
-    def __init__(self, trans_prob_matrix: pandas.core.frame.DataFrame, finished=False, location='entrance'):
+    def __init__(self, trans_prob_matrix, finished=False, location='entrance'):
         self.trans_prob_matrix
         self.finished = finished
         self.location = location
@@ -22,11 +26,12 @@ class Customer:
         
         ### ==> Needs to be called, which could be done by storing each created customer object in a list.
         '''
-        if location != 'checkout' and finished == False:
-            self.location = np.random.choice(list(trans_prob_matrix.index), p=list(trans_prob_matrix[location]))
+        if self.location != 'checkout' and self.finished == False:
+            self.location = np.random.choice(list(self.trans_prob_matrix.index), p=list(self.trans_prob_matrix[self.location]))
             
             # return self.location or 'return location?' 
             # - do we need this, or will other functions just make use of customers location to display object appropiately?
         
         else:
             self.finished = True
+
