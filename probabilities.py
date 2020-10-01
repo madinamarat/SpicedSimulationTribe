@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-Read the five day-of-week supermarket csvs,
+Reads the five day-of-week supermarket csvs,
 calculates the Transition Probability Matrix from it and
 returns the matrix as a dataframe
 with current location as columns headers and next possible location as index.
+Stores it as csv in <wd>/data and will first look to load it from there when 
+called again.
+
+Generates the list of probabilities used for the generate_new_customer function.
+
 
 Can be used by
 --------------
-    import trans_prob_matrix
-
-    tpm = trans_prob_matrix.get_tpm()
-
+   from trans_prob_matrix import get_trans_prob_matrix, get_prob_for_new_customer_list
 
 """
 import pandas as pd
@@ -77,7 +79,7 @@ def tpm_from_df(df):
     return TPM
 
 
-def get_tpm():
+def get_trans_prob_matrix():
     '''
     Uses the above functions to read the five supermarket datasets
     and to return a transition probability matrix used to for the
@@ -96,3 +98,31 @@ def get_tpm():
         trans_prob_matrix.to_csv("data/trans_prob_matrix.csv")
 
     return trans_prob_matrix
+
+
+def get_prob_for_new_customer_list():
+    '''
+    - Generates and returns a list of probabilities if a new customer is generated,
+    based on the current numbers of customers in the store.
+    - Assumes a maximum number of customers instore of 36.
+    - The probability to generate new customer is below 50% once 12 customers are in the store
+    (based on the mean instore customer number on wednesday dataset).
+    '''
+    
+    # range of possible numbers of customer in store: 0 to maximum of 36
+    raw = []
+    for i in range(37):
+        raw.append(i)
+    
+    raw_normed = [float(i)/len(raw) for i in raw]
+    
+    probability_list = []
+    a = 0.2
+    for i in raw_normed:
+        new = i * a
+        probability_list.append(new)
+        a = a**a - 0.05
+    
+    probability_list.reverse()
+    
+    return probability_list
