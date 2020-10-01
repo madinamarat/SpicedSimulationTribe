@@ -34,15 +34,15 @@ class Supermarket:
             y = random.randint(ymin, ymax)
             self.image[y:y+size, x:x+size] = cust_img
 
-    def drawx(self, frame):
-        """draws n_customers onto the frame"""
-        cust = np.zeros((size, size, 3), dtype='int8')
-        for aisle in aisle_names:
-            xmin, xmax = aisles[aisle]['x']
-            ymin, ymax = aisles[aisle]['y']
-            x = random.randint(xmin, xmax)
-            y = random.randint(ymin, ymax)
-            self.image[y:y+size, x:x+size] = cust
+    # def drawx(self, frame):
+    #     """draws n_customers onto the frame"""
+    #     cust = np.zeros((size, size, 3), dtype='int8')
+    #     for aisle in aisle_names:
+    #         xmin, xmax = aisles[aisle]['x']
+    #         ymin, ymax = aisles[aisle]['y']
+    #         x = random.randint(xmin, xmax)
+    #         y = random.randint(ymin, ymax)
+    #         self.image[y:y+size, x:x+size] = cust
 
 
 # class Location:
