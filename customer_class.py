@@ -19,13 +19,14 @@ class Customer:
     current_location - Default: entrance coordinates; coordinates of each step of movement.
     '''
 
-    def __init__(self, trans_prob_matrix, finished=False, target_location='entrance', current_location):
+    def __init__(self, trans_p_matrix, current_location, finished=False, target_location='entrance'):
         '''current location needs to be coordinates of entrance, then changed accoring to moving algorithm
         # moving to coordinates of target_location'''
-        self.trans_prob_matrix = trans_prob_matrix
+        self.trans_p_matrix = trans_p_matrix
+        self.current_location = current_location
         self.finished = finished
         self.target_location = target_location
-        self.current_location
+        
 
 
     def next_location(self):
@@ -35,7 +36,7 @@ class Customer:
         ### ==> Needs to be called, which could be done by storing each created customer object in a list.
         '''
         if self.target_location != 'checkout' and self.finished == False:
-            self.target_location = np.random.choice(list(self.trans_prob_matrix.index), p=list(self.trans_prob_matrix[self.target_location]))
+            self.target_location = np.random.choice(list(self.trans_p_matrix.index), p=list(self.trans_p_matrix[self.target_location]))
 
             # return self.location or 'return location?'
             # - do we need this, or will other functions just make use of customers location to display object appropiately?
@@ -45,3 +46,6 @@ class Customer:
             ''' => Delete coordinates to make customer disappear?
             Or just delete customer from instore list (based on finished = True),
             which defines what is displayed'''
+
+import trans_prob_matrix
+
