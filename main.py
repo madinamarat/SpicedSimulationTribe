@@ -33,8 +33,8 @@ def generate_new_customer(global_instore_count: int, cust_prob_list: list):
     generate = np.random.choice(['yes', 'no'], p=(prob, 1-prob))
 
     if generate == 'yes':
-        # customer_image = customer_images.get_random_image()
-        customer_image = customer_images.pacman4
+        customer_image = customer_images.get_random_image()
+        # customer_image = customer_images.pacman4
         #global instore_customers
         instore_customers.append(Customer(tpm, customer_image))
         # updating instore_count
@@ -53,7 +53,7 @@ def hello_supermarket():
     - total_visits_abs : dict to store visits of a location (incl. multiple by same customer)
     - revenue_per_visit : dict that contains constant values of avg revenue per visit for calculation
     - total_revenue_eur : dict to store calculated total revenue per location, in Euro
-    
+
     and creates starting population of customers for supermarket generation.
     '''
 
@@ -66,7 +66,8 @@ def hello_supermarket():
 
     global revenue_per_visit, total_revenue_eur
     revenue_per_visit = {'dairy': 5, 'drinks': 6, 'fruit': 4, 'spices': 3}
-    total_revenue_eur = {'dairy': 0, 'drinks': 0, 'fruit': 0, 'spices': 0, 'total': 0}
+    total_revenue_eur = {'dairy': 0, 'drinks': 0,
+                         'fruit': 0, 'spices': 0, 'total': 0}
 
     for _ in range(20):
         generate_new_customer(instore_count, prob_for_new_customer_list)
@@ -79,10 +80,11 @@ def calculate_revenue(total_revenue, customers_out):
     Then cleans the outstore_customers for the next loop.
     '''
     for cust in customers_out:
-        for key in revenue_per_visit:    
+        for key in revenue_per_visit:
             rev = (cust.visits[key] * revenue_per_visit[key])
             total_revenue[key] += rev
             total_revenue['total'] += rev
+
     print(total_revenue)
     global outstore_customers
     customers_out = []
@@ -106,8 +108,8 @@ while True:
         generate_new_customer(instore_count, prob_for_new_customer_list)
     [cust.move() for cust in instore_customers]
     cv2.imshow('frame', market.frame)
-    calculate_revenue(total_revenue_eur, outstore_customers)
-    print(total_revenue_eur)
+    if (len(outstore_customers) > 0):
+        calculate_revenue(total_revenue_eur, outstore_customers)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 

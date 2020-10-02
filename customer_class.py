@@ -52,17 +52,18 @@ class Customer:
     current_coordinates - Default: entrance coordinates; coordinates of each step of movement.
     '''
 
-    def __init__(self, trans_p_matrix, icon):
+    def __init__(self, trans_p_matrix, img):
         '''current location needs to be coordinates of entrance, then changed according to moving algorithm
         # moving to coordinates of target_location'''
         self.trans_p_matrix = trans_p_matrix
-        self.finished = False   # will be set to True once customer reaches checkout 
-                                # -> allows if-conditionally for deactivation.
+        self.finished = False   # will be set to True once customer reaches checkout
+        # -> allows if-conditionally for deactivation.
         self.target_location = 'entrance'
         self.target_coordinates = get_semi_random_coord('entrance')
         self.current_coordinates = get_semi_random_coord('entrance')
-        self.icon = icon
-        self.visits = {'dairy': 0, 'drinks': 0, 'fruit': 0, 'spices': 0, 'entrance': 0}
+        self.img = img
+        self.visits = {'dairy': 0, 'drinks': 0,
+                       'fruit': 0, 'spices': 0, 'entrance': 0}
 
     def move(self):
         target = self.target_location
@@ -86,10 +87,12 @@ class Customer:
             else:
                 if cur_y < ymin:
                     cur_y += size
-                    self.icon = customer_images.pacman3
+                    if (self.img['type'] == 'pacman'):
+                        self.img['icon'] = customer_images.pac_down
                 elif cur_y > ymin:
                     cur_y -= ymin
-                    self.icon = customer_images.pacman4
+                    if (self.img['type'] == 'pacman'):
+                        self.img['icon'] = customer_images.pac_up
 
         else:
             diff_to_top = abs(ymin_top - cur_y)
@@ -98,32 +101,40 @@ class Customer:
             if diff_to_bottom < diff_to_top:
                 if cur_y < ymin_bottom:
                     cur_y += size
-                    self.icon = customer_images.pacman3
+                    if (self.img['type'] == 'pacman'):
+                        self.img['icon'] = customer_images.pac_down
                 elif cur_y > ymax_bottom:
                     cur_y -= size
-                    self.icon = customer_images.pacman4
+                    if (self.img['type'] == 'pacman'):
+                        self.img['icon'] = customer_images.pac_up
 
                 else:
                     if cur_x < tar_x:
                         cur_x += size
-                        self.icon = customer_images.pacman1
+                        if (self.img['type'] == 'pacman'):
+                            self.img['icon'] = customer_images.pac_right
                     elif cur_x > tar_x:
                         cur_x -= size
-                        self.icon = customer_images.pacman2
+                        if (self.img['type'] == 'pacman'):
+                            self.img['icon'] = customer_images.pac_left
             else:
                 if cur_y < ymin_top:
                     cur_y += size
-                    self.icon = customer_images.pacman3
+                    if (self.img['type'] == 'pacman'):
+                        self.img['icon'] = customer_images.pac_down
                 elif cur_y > ymax_top:
                     cur_y -= size
-                    self.icon = customer_images.pacman4
+                    if (self.img['type'] == 'pacman'):
+                        self.img['icon'] = customer_images.pac_up
                 else:
                     if cur_x < tar_x:
                         cur_x += size
-                        self.icon = customer_images.pacman1
+                        if (self.img['type'] == 'pacman'):
+                            self.img['icon'] = customer_images.pac_right
                     elif cur_x > tar_x:
                         cur_x -= size
-                        self.icon = customer_images.pacman2
+                        if (self.img['type'] == 'pacman'):
+                            self.img['icon'] = customer_images.pac_left
 
         self.current_coordinates = (cur_x, cur_y)
 

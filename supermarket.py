@@ -14,4 +14,4 @@ class Supermarket:
         self.frame = self.image.copy()
         for customer in customers:
             x, y = customer.current_coordinates
-            self.frame[y:y+self.size, x:x+self.size] = customer.icon
+            self.frame[y:y+self.size, x:x+self.size] = customer.img['icon']
