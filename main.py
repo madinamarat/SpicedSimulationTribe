@@ -2,15 +2,20 @@ import numpy as np
 import cv2
 import time
 import pandas as pd
+import random
 
+from supermarket import Supermarket
 from customer_class import Customer
 from probabilities import get_trans_prob_matrix, get_prob_for_new_customer_list
-from supermarket import Supermarket
+from customer_images import get_random_image
+
+size = 32
+# cust_img = np.zeros((size, size, 3), dtype='int8') # static image
 
 
 def generate_new_customer(global_instore_count: int, cust_prob_list: list):
     '''
-    Decides base on customer currently in store and probability list if new customer is created or not.
+    Decides based on customers currently in store and probability list if new customer is created or not.
     If yes, then creates new instore customer.
 
     Parameters
@@ -21,17 +26,17 @@ def generate_new_customer(global_instore_count: int, cust_prob_list: list):
         DESCRIPTION.
 
     '''
-    
+
     prob = cust_prob_list[global_instore_count]
     generate = np.random.choice(['yes', 'no'], p=(prob, 1-prob))
-    
-    if generate == 'yes': 
-        '''customer_image = sth random'''
+
+    if generate == 'yes':
+        customer_image = get_random_image()
         #global instore_customers
         instore_customers.append(Customer(tpm, customer_image))
-        #updating instore_count
+        # updating instore_count
         global instore_count
-        instore_count = len(instore_customers) 
+        instore_count = len(instore_customers)
 
 
 def hello_supermarket():
@@ -44,30 +49,26 @@ def hello_supermarket():
     - tpm : transition probability matrix via get_tpm
     and creates starting population of customers for supermarket generation.
     '''
-    
+
     global instore_customers, instore_count, prob_for_new_customer_list, tpm
     instore_customers = []
     instore_count = 0
     prob_for_new_customer_list = get_prob_for_new_customer_list()
     tpm = get_trans_prob_matrix()
-    
+
     for _ in range(20):
         generate_new_customer(instore_count, prob_for_new_customer_list)
 
 
-
 hello_supermarket()
-
-
 market_img = cv2.imread('./img/market.png')
-
-
-market = Supermarket(market_img, [])
+market = Supermarket(market_img, size)
 
 while True:
-    frame = market_img.copy()
-    market.draw(frame)
-    cv2.imshow('frame', frame)
+    time.sleep(0.1)
+    market.draw(instore_customers)
+    [cust.move() for cust in instore_customers]
+    cv2.imshow('frame', market.frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
