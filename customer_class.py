@@ -7,6 +7,9 @@ Contains customer class for supermarket simulation.
 import numpy as np
 import random
 
+import customer_images
+
+
 size = 32
 sections = {
     'drinks': {'x': (100, 230-size), 'y': (170, 470-size)},
@@ -56,8 +59,8 @@ class Customer:
         self.finished = False   # will be set to True once customer reaches checkout 
                                 # -> allows if-conditionally for deactivation.
         self.target_location = 'entrance'
-        self.target_coordinates = get_semi_random_coord(target_location)
-        self.current_coordinates = get_semi_random_coord(target_location)
+        self.target_coordinates = get_semi_random_coord('entrance')
+        self.current_coordinates = get_semi_random_coord('entrance')
         self.icon = icon
 
     def move(self):
@@ -75,14 +78,17 @@ class Customer:
             # within correct y coordinates
             if ymin < cur_y < ymax:
                 if self.target_location == 'checkout':
-                    ...
+                    self.finished = True
                 else:
                     self.next_location()
             else:
                 if cur_y < ymin:
                     cur_y += size
+                    self.icon = customer_images.pacman3
                 elif cur_y > ymin:
                     cur_y -= ymin
+                    self.icon = customer_images.pacman4
+
         else:
             diff_to_top = abs(ymin_top - cur_y)
             diff_to_bottom = abs(ymax_bottom - cur_y)
@@ -90,23 +96,32 @@ class Customer:
             if diff_to_bottom < diff_to_top:
                 if cur_y < ymin_bottom:
                     cur_y += size
+                    self.icon = customer_images.pacman3
                 elif cur_y > ymax_bottom:
                     cur_y -= size
+                    self.icon = customer_images.pacman4
+
                 else:
                     if cur_x < tar_x:
                         cur_x += size
+                        self.icon = customer_images.pacman1
                     elif cur_x > tar_x:
                         cur_x -= size
+                        self.icon = customer_images.pacman2
             else:
                 if cur_y < ymin_top:
                     cur_y += size
+                    self.icon = customer_images.pacman3
                 elif cur_y > ymax_top:
                     cur_y -= size
+                    self.icon = customer_images.pacman4
                 else:
                     if cur_x < tar_x:
                         cur_x += size
+                        self.icon = customer_images.pacman1
                     elif cur_x > tar_x:
                         cur_x -= size
+                        self.icon = customer_images.pacman2
 
         self.current_coordinates = (cur_x, cur_y)
 

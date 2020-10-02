@@ -7,7 +7,7 @@ import random
 from supermarket import Supermarket
 from customer_class import Customer
 from probabilities import get_trans_prob_matrix, get_prob_for_new_customer_list
-from customer_images import get_random_image
+import customer_images
 
 size = 32
 # cust_img = np.zeros((size, size, 3), dtype='int8') # static image
@@ -33,7 +33,8 @@ def generate_new_customer(global_instore_count: int, cust_prob_list: list):
     generate = np.random.choice(['yes', 'no'], p=(prob, 1-prob))
 
     if generate == 'yes':
-        customer_image = get_random_image()
+        # customer_image = customer_images.get_random_image()
+        customer_image = customer_images.pacman4
         #global instore_customers
         instore_customers.append(Customer(tpm, customer_image))
         # updating instore_count
@@ -68,7 +69,14 @@ market = Supermarket(market_img, size)
 
 while True:
     time.sleep(0.1)
+    old_count = instore_count
     market.draw(instore_customers)
+    instore_customers = [
+        cust for cust in instore_customers if cust.finished == False]
+    instore_count = len(instore_customers)
+    for x in range(old_count - instore_count):
+        generate_new_customer(instore_count, prob_for_new_customer_list)
+        generate_new_customer(instore_count, prob_for_new_customer_list)
     [cust.move() for cust in instore_customers]
     cv2.imshow('frame', market.frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
