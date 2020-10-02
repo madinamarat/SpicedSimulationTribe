@@ -24,7 +24,7 @@ def generate_new_customer(global_instore_count: int, cust_prob_list: list):
         Number of customers currently in the store.
     cust_prob_list : list
         List of the probabilities that a new customer is created to enter the store,
-        dpendent on number of customers currently in the store, the latter
+        dependent on number of customers currently in the store, the latter
         equals Index of the list.
 
     '''
