@@ -64,8 +64,7 @@ def hello_supermarket():
     tpm = get_trans_prob_matrix()
     outstore_customers = []
 
-    global total_visits_abs, revenue_per_visit, total_revenue_eur
-    total_visits_abs = {'dairy': 0, 'drinks': 0, 'fruit': 0, 'spices': 0}
+    global revenue_per_visit, total_revenue_eur
     revenue_per_visit = {'dairy': 5, 'drinks': 6, 'fruit': 4, 'spices': 3}
     total_revenue_eur = {'dairy': 0, 'drinks': 0, 'fruit': 0, 'spices': 0, 'total': 0}
 
@@ -73,15 +72,15 @@ def hello_supermarket():
         generate_new_customer(instore_count, prob_for_new_customer_list)
 
 
-def calculate_revenue(total_visits, total_revenue, customers_out):
+def calculate_revenue(total_revenue, customers_out):
     '''
     Takes this loop's outstore_customers list to add the revenue of the customers
     visits and add it to the total_revenue_eur dict.
     Then cleans the outstore_customers for the next loop.
     '''
     for cust in customers_out:
-        for key in cust.visits:    
-            rev = (total_visits[key] * revenue_per_visit[key])
+        for key in revenue_per_visit:    
+            rev = (cust.visits[key] * revenue_per_visit[key])
             total_revenue[key] += rev
             total_revenue['total'] += rev
     print(total_revenue)
@@ -107,7 +106,7 @@ while True:
         generate_new_customer(instore_count, prob_for_new_customer_list)
     [cust.move() for cust in instore_customers]
     cv2.imshow('frame', market.frame)
-    calculate_revenue(total_visits_abs, total_revenue_eur, outstore_customers)
+    calculate_revenue(total_revenue_eur, outstore_customers)
     print(total_revenue_eur)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
