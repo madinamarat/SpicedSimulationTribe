@@ -23,6 +23,10 @@ pacman10 = Image.fromarray(market[4 * 32:4 * 32+32, 2 * 32:2 * 32+32])
 pacman11 = Image.fromarray(market[5 * 32:5 * 32+32, 2 * 32:2 * 32+32])
 pacman12 = Image.fromarray(market[6 * 32:6 * 32+32, 2 * 32:2 * 32+32])
 ghost = Image.fromarray(market[7 * 32:7 * 32+32, 0 * 32:0 * 32+32])
+pc=Image.open('./img/pm2.png')
+pc_array= np.array(pc)
+pc_array_new=pc_array[:,:,:3]
+pc_new=Image.fromarray(pc_array_new)
 
 imgs = [fish1, fish2, fish3, fish4, pacman1,
         pacman2, pacman3, pacman4, pacman5, pacman6, pacman7, pacman8, pacman9, pacman10, pacman11, pacman12, ghost, ghost, ghost, ghost, ghost, ghost]
