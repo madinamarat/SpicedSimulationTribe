@@ -62,6 +62,7 @@ class Customer:
         self.target_coordinates = get_semi_random_coord('entrance')
         self.current_coordinates = get_semi_random_coord('entrance')
         self.icon = icon
+        self.visits = {'dairy': 0, 'drinks': 0, 'fruit': 0, 'spices': 0}
 
     def move(self):
         target = self.target_location
@@ -80,6 +81,7 @@ class Customer:
                 if self.target_location == 'checkout':
                     self.finished = True
                 else:
+                    self.visits[self.target_location] += 1
                     self.next_location()
             else:
                 if cur_y < ymin:
