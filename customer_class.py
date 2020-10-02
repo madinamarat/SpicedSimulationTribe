@@ -37,20 +37,25 @@ class Customer:
     '''
     Customer for supermarket simulation.
 
-    Parameters :
-    ------------
-    trans_prob_matrix - as pandas DataFrame with current location as columns headers and next possible location as index.
-    finished - Default : False ; will be set to True once customer reaches checkout -> allows if-conditionally for deactivation.
+    Parameters
+    ----------
+    trans_p_matrix : pandas DataFrame
+        Transition Probability Matrix with current location as columns headers 
+        and possible next locations as indexes.
+    finished : boolean 
+        Default = False ; will be set to True once customer reaches checkout 
+        -> allows if-conditionally for deactivation.
     target_location - Default : 'entrance'
     current_coordinates - Default: entrance coordinates; coordinates of each step of movement.
     '''
 
-    def __init__(self, trans_p_matrix, icon, target_location='entrance', finished=False):
-        '''current location needs to be coordinates of entrance, then changed accoring to moving algorithm
+    def __init__(self, trans_p_matrix, icon):
+        '''current location needs to be coordinates of entrance, then changed according to moving algorithm
         # moving to coordinates of target_location'''
         self.trans_p_matrix = trans_p_matrix
-        self.finished = finished
-        self.target_location = target_location
+        self.finished = False   # will be set to True once customer reaches checkout 
+                                # -> allows if-conditionally for deactivation.
+        self.target_location = 'entrance'
         self.target_coordinates = get_semi_random_coord(target_location)
         self.current_coordinates = get_semi_random_coord(target_location)
         self.icon = icon
