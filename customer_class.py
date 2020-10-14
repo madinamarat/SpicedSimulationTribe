@@ -1,3 +1,6 @@
+
+''' this is a good code'''
+
 '''
 Contains customer class for supermarket simulation.
 
